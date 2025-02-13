@@ -308,8 +308,8 @@ class NerfactoModel(Model):
             depth = self.renderer_depth(weights=weights, ray_samples=ray_samples)
         expected_depth = self.renderer_expected_depth(weights=weights, ray_samples=ray_samples)
         # Smoothing on the depth vectors 1e-6 (the best performance)
-        # 1e-7 for uterus
-        self.loss_depth = self.split(expected_depth) * 1e-7
+        # 1e-7 for uterus experience
+        self.loss_depth = self.split(expected_depth) * 1e-6
         accumulation = self.renderer_accumulation(weights=weights)
 
         outputs = {
