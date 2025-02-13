@@ -2,7 +2,7 @@
 <h1 align="center">MIS-NeRF</h1>
 
 <p align="center">
-  <img src="assets/rgb.gif" width="33%"/><img src="assets/Intraoperative.gif" width="33%"/><img src="assets/preoperative.gif" width="33%"/>
+  <img src="assets/rgb.gif" width="33%"/><img src="assets/Intraoperative.gif" width="33%"/><img src="assets/Preoperative.gif" width="33%"/>
 </p>
 
 
@@ -22,7 +22,7 @@ to bootstrap Iterative Closest Point (ICP) registration.
 ### Dependencies
 
 Since MIS-NeRF is built upon the Nerfstudio framework, all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
-We have developed and customized version 1.0.0 of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
+We have developed and modified version v1.0.0 of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
 ## 2. Using the synthetic liver dataset
 This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
 The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
