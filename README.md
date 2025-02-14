@@ -5,17 +5,6 @@
   <img src="assets/rgb.gif" width="33%"/><img src="assets/Intraoperative.gif" width="33%"/><img src="assets/Preoperative.gif" width="33%"/>
 </p>
 
-<p align="center">
-  <table>
-    <tr>
-      <td><img src="assets/rgb.gif"></td>
-      <td><img src="assets/Intraoperative.gif" ></td>
-      <td><img src="assets/Preoperative.gif"></td>
-    </tr>
-  </table>
-</p>
-
-
 
 
 # About
