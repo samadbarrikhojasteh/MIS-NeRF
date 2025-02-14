@@ -21,7 +21,7 @@ to bootstrap Iterative Closest Point (ICP) registration.
 
 ### Dependencies
 
-Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto] (https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
+Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto](https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
 We have developed and modified version ```v1.0.0``` of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
 ## 2. Using the synthetic liver dataset
 This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
