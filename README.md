@@ -2,7 +2,7 @@
 <h1 align="center">MIS-NeRF</h1>
 
 <p align="center">
-  <img src="assets/merged.gif" width="100%"/>
+  <img src="assets/merged2.gif" width="100%"/>
 </p>
 
 
