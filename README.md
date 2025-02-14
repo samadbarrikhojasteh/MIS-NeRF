@@ -2,7 +2,9 @@
 <h1 align="center">MIS-NeRF</h1>
 
 <p align="center">
-  <img src="assets/rgb.gif" width="33%"/><img src="assets/Intraoperative.gif" width="33%"/><img src="assets/Preoperative.gif" width="33%"/>
+  <video width="100%" controls>
+    <source src="assets/merged.mp4" type="video/mp4">
+  </video>
 </p>
 
 
