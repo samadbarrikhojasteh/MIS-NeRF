@@ -2,9 +2,7 @@
 <h1 align="center">MIS-NeRF</h1>
 
 <p align="center">
-  <video width="100%" controls>
-    <source src="assets/merged.mp4" type="video/mp4">
-  </video>
+  <img src="assets/merged.gif" width="100%"/>
 </p>
 
 
