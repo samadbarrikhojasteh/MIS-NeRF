@@ -210,9 +210,10 @@ class ParallelDataManager(DataManager, Generic[TDataset]):
         if mp.get_start_method(allow_none=True) is None:  # type: ignore
             mp.set_start_method("spawn")  # type: ignore
         super().__init__()
-        # we need to comment these two self when render the trained model
-        self.praper_val_image()
-        self.one_time_nonzero()
+        # We need to avoid run one_time_non_zero when rendering is performing
+        if test_mode == "val":
+            self.praper_val_image()
+            self.one_time_nonzero()
 
     def create_train_dataset(self) -> TDataset:
         """Sets up the data loaders for training."""
