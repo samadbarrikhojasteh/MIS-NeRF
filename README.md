@@ -7,7 +7,7 @@
 
 
 
-# About
+# 📝About
 
 
 Minimally-Invasive Surgery (MIS) reduces the trauma compared to open surgery but is challenging for endophytic lesion localisation. Augmented
@@ -17,13 +17,13 @@ to bootstrap Iterative Closest Point (ICP) registration.
 
 
 
-## 1. Installation and Setup the environment
+## 1. Installation and Setup the environment🚀
 
-### Dependencies
+### 📦Dependencies
 
 Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto](https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
 We have developed and modified version ```v1.0.0``` of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
-## 2. Using the synthetic liver dataset
+## 2. Synthetic liver dataset📂
 This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
 The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
 method. You can access the dataset [here](Dataset).
@@ -34,7 +34,7 @@ ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH --output-dir
 ```
 Please note that if your custom dataset has _mask_ folder, it must be placed at the same directory level as the images folder.
 The SfM method will utilize the mask folder if it is available. Otherwise, SfM will assume background and foreground.
-## 3. Training 
+## 3. Training🏋️‍♂️
 To effectively train the _MIS-NeRF_ model, we recommend using the following code snippet:
 ```bash
 # Train model
@@ -42,15 +42,20 @@ ns-train nerfacto --pipeline.model.background-color random --pipeline.model.pred
 ```
 
 
+## 📖 Citation
 
-
-# Citation
 If you find MIS-NeRF useful, please cite our paper:
 
-```
+##### "MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery."
 
-```
+[https://doi.org/10.1007/s11548-025-03429-7](https://doi.org/10.1007/s11548-025-03429-7)
 
-# Contributors
-
-
+```bibtex
+@article{Khojasteh2025,
+  author    = {Samad Barri Khojasteh and David Fuentes-Jimenez and Daniel Pizarro and Yamid Espinel and Adrien Bartoli},
+  title     = {MIS-NeRF: neural radiance fields in minimally-invasive surgery},
+  journal   = {International Journal of Computer Assisted Radiology and Surgery},
+  year      = {2025},
+  doi       = {10.1007/s11548-025-03429-7},
+  url       = {https://doi.org/10.1007/s11548-025-03429-7}
+}
