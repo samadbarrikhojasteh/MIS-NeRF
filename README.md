@@ -1,5 +1,6 @@
-<p align="center"> Neural Radiance Fields in Minimally-Invasive Surgery </p>
+
 <h1 align="center">MIS-NeRF</h1>
+<h2 align="center"> Neural Radiance Fields in Minimally-Invasive Surgery </h2>
 
 <p align="center">
   <img src="assets/merged2.gif" width="100%"/>
@@ -7,7 +8,7 @@
 
 
 
-# 📝About
+## 📝About
 
 
 Minimally-Invasive Surgery (MIS) reduces the trauma compared to open surgery but is challenging for endophytic lesion localisation. Augmented
