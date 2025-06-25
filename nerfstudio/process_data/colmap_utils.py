@@ -27,6 +27,7 @@ import numpy as np
 import requests
 import torch
 from rich.progress import track
+from packaging.version import Version
 from nerfstudio.process_data.process_data_utils import list_images
 
 # TODO(1480) use pycolmap instead of colmap_parsing_utils
@@ -43,7 +44,7 @@ from nerfstudio.utils.rich_utils import CONSOLE, status
 from nerfstudio.utils.scripts import run_command
 
 
-def get_colmap_version(colmap_cmd: str, default_version=3.8) -> float:
+def get_colmap_version(colmap_cmd: str, default_version: str = "3.8") -> Version:
     """Returns the version of COLMAP.
     This code assumes that colmap returns a version string of the form
     "COLMAP 3.8 ..." which may not be true for all versions of COLMAP.
@@ -58,10 +59,10 @@ def get_colmap_version(colmap_cmd: str, default_version=3.8) -> float:
     for line in output.split("\n"):
         if line.startswith("COLMAP"):
             version = line.split(" ")[1]
-            version = "".join([c for c in version if c.isdigit() or c == "."])
-            return float(version)
+            version = Version(version)
+            return version
     CONSOLE.print(f"[bold red]Could not find COLMAP version. Using default {default_version}")
-    return default_version
+    return Version(default_version)
 
 
 def get_vocab_tree() -> Path:
@@ -129,9 +130,6 @@ def run_colmap(
         f"--SiftExtraction.use_gpu {int(gpu)}",
         "--ImageReader.single_camera_per_folder 1",
     ]
-    #Add camera parameters(from GT) for the datasets which can not get Colmap results
-    # cam_param = ("1495.126,1495.126,1027.191,565.534,0.0,0.0,0.0,0.0")
-    # feature_extractor_cmd.append(f"--ImageReader.camera_params {cam_param}")
 
     if camera_mask_path is not None and len(list_images(camera_mask_path)) > 1:
         feature_extractor_cmd.append(f"--ImageReader.mask_path {camera_mask_path}")
@@ -166,10 +164,8 @@ def run_colmap(
         f"--database_path {colmap_dir / 'database.db'}",
         f"--image_path {image_dir}",
         f"--output_path {sparse_dir}",
-        # "--Mapper.ba_refine_focal_length 0",
-        # "--Mapper.ba_refine_extra_params 0",
     ]
-    if colmap_version >= 3.7:
+    if colmap_version >= Version("3.7"):
          mapper_cmd.append("--Mapper.ba_global_function_tolerance=1e-6")
 
     mapper_cmd = " ".join(mapper_cmd)
@@ -188,10 +184,6 @@ def run_colmap(
                 f"{colmap_cmd} bundle_adjuster",
                 f"--input_path {sparse_dir}/0",
                 f"--output_path {sparse_dir}/0",
-                # "--BundleAdjustment.refine_principal_point 0",
-                # "--BundleAdjustment.refine_focal_length 0",
-                # "--BundleAdjustment.refine_extrinsics 0",
-                # "--BundleAdjustment.refine_extra_params 0",
             ]
             run_command(" ".join(bundle_adjuster_cmd), verbose=verbose)
         CONSOLE.log("[bold green]:tada: Done refining intrinsics.")
