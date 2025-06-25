@@ -27,10 +27,10 @@ We have developed and modified version ```v1.0.0``` of Nerfstudio, which can be 
 This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
 The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
 method. You can access the dataset [here](Dataset).
-In addition, we also put camera location ```transforms.json``` file that was provided by _SfM_ method.
+In addition, we also put camera location ```output_sfm``` folder that was provided by _SfM_ method.
 If you wish to use a different dataset, you can process it using the following command:
 ```bash
-ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH
+ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH/output_sfm
 ```
 Please note that if your custom dataset has _mask_ folder, it must be placed at the same directory level as the images folder.
 The SfM method will utilize the mask folder if it is available. Otherwise, SfM will assume background and foreground.
