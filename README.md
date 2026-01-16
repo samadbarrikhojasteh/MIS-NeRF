@@ -18,13 +18,13 @@ to bootstrap Iterative Closest Point (ICP) registration.
 
 
 
-## 1. Installation and Setup the environment🚀
+## 1. 🚀 Installation and Setup the environment 🚀
 
-### 📦Dependencies
+### 📦 Dependencies
 
 Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto](https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
 We have developed and modified version ```v1.0.0``` of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
-## 2. Synthetic liver dataset📂
+## 2. 📂 Synthetic liver dataset
 This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
 The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
 method. You can access the dataset [here](Dataset).
@@ -35,13 +35,18 @@ ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --out
 ```
 Please note that if your custom dataset has _mask_ folder, it must be placed at the same directory level as the images folder.
 The SfM method will utilize the mask folder if it is available. Otherwise, SfM will assume background and foreground.
-## 3. Training🏋️‍♂️
+## 3. 🏋️‍♂️ Training
 To effectively train the _MIS-NeRF_ model, we recommend using the following code snippet:
 ```bash
 # Train model
 ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data  
 ```
-
+## 4. 📊 Evaluation
+To evaluate your trained model on the test dataset and compute the photometric metrics, you can run the following command:
+```bash
+ns-render dataset --load-config YOUR/PATH/config.yml
+```
+The metrics CSV file can be found in the `renders` folder.
 
 ## 📖 Citation
 
