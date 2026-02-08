@@ -187,7 +187,7 @@ class NerfactoField(Field):
             self.field_head_pred_normals = PredNormalsFieldHead(in_dim=self.mlp_pred_normals.get_out_dim())
 
         self.mlp_head = MLP(
-            in_dim=self.direction_encoding.get_out_dim() + self.geo_feat_dim + self.appearance_embedding_dim,# + 12,
+            in_dim=self.direction_encoding.get_out_dim() + self.geo_feat_dim + self.appearance_embedding_dim + 12,
             num_layers=num_layers_color,
             layer_width=hidden_dim_color,
             out_dim=3,
@@ -290,7 +290,7 @@ class NerfactoField(Field):
 
         h = torch.cat(
             [
-                # o_flat2,
+                o_flat2,
                 d,
                 density_embedding.view(-1, self.geo_feat_dim),
                 embedded_appearance.view(-1, self.appearance_embedding_dim),
