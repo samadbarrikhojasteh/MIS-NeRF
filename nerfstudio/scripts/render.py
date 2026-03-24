@@ -1013,7 +1013,7 @@ class DatasetRender(BaseRender):
             img_gt_org = cv2.imread(str(img_org / img))
             mask_org = cv2.imread(str(mask_dir / img))[:, :, 0] / 255
             mask_mean = cv2.cvtColor(img_gt_org, cv2.COLOR_RGB2GRAY) / 255
-            mask_raw = np.where(mask_mean > 0.85, 0.0, 1.0)
+            mask_raw = np.where(mask_mean > 0.9, 0.0, 1.0)
             mask_spe.append(mask_raw)
             mask_bg.append(mask_org)
             pred_img.append(img_rend)
