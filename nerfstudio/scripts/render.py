@@ -996,8 +996,11 @@ class DatasetRender(BaseRender):
         CONSOLE.print(Panel(table, title="[bold][green]:tada: Render on split {} Complete :tada:[/bold]", expand=False))
 
         # Compute PSNR, SSIM and LPIPS
-        mask_dir = config.data / "masks_2"
-        img_org = config.data / "images_2"
+        # mask_dir = config.data / "masks_2"
+        # img_org = config.data / "images_2"
+        indx = datamanager.dataparser.downscale_factor
+        mask_dir = config.data / f"masks_{indx}"
+        img_org = config.data / f"images_{indx}"
         # img_gt = config.data / "renders" / "test" / "gt-rgb"
         img_gt = self.output_path / split / "gt-rgb"
         # img_rendered = config.data / "renders" / "test" / "rgb"
