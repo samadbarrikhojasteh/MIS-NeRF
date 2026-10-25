@@ -1,6 +1,5 @@
-
 <h1 align="center">
-  <a href="https://doi.org/10.1007/s11548-025-03429-7">MIS-NeRF</a>
+  <a>MIS-NeRF</a>
 </h1>
 <h2 align="center"> Neural Radiance Fields in Minimally-Invasive Surgery </h2>
 
