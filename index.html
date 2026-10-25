@@ -1,67 +1,253 @@
-<h1 align="center">
-  <a>MIS-NeRF</a>
-</h1>
-<h2 align="center"> Neural Radiance Fields in Minimally-Invasive Surgery </h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery.">
+  <title>MIS-NeRF | Neural Radiance Fields in Minimally-Invasive Surgery</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --text: #24292f;
+      --muted: #57606a;
+      --border: #d0d7de;
+      --surface: #f6f8fa;
+      --link: #0969da;
+      --accent: #1f6feb;
+    }
 
-<p align="center">
-  <img src="assets/merged2.gif" width="100%"/>
-</p>
+    * { box-sizing: border-box; }
 
+    html { scroll-behavior: smooth; }
 
+    body {
+      margin: 0;
+      background: #ffffff;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+    }
 
-## 📝About
+    .container {
+      width: min(100% - 40px, 1000px);
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
 
+    header { text-align: center; }
 
-Minimally-Invasive Surgery (MIS) reduces the trauma compared to open surgery but is challenging for endophytic lesion localisation. Augmented
-Reality (AR) is a promising assistance, which superimposes a preoperative 3D lesion model onto the MIS images. It requires solving the difficult problem of
-3D model to MIS image registration. We propose MIS-NeRF, a Neural Radiance Field (NeRF) which provides high-fidelity intraoperative 3D reconstruction, used
-to bootstrap Iterative Closest Point (ICP) registration.
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
 
+    .subtitle {
+      margin: 12px 0 24px;
+      color: var(--muted);
+      font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      font-weight: 400;
+      line-height: 1.4;
+    }
 
+    .hero-gif {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0 auto 28px;
+      border-radius: 8px;
+    }
 
-## 1. 🚀 Installation and Setup the environment 🚀
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 38px;
+    }
 
-### 📦 Dependencies
+    .project-links a {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 600;
+      background: #fff;
+    }
 
-Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto](https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF. 
-We have developed and modified version ```v1.0.0``` of Nerfstudio, which can be accessed [here](https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0).
-## 2. 📂 Synthetic liver dataset
-This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
-The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
-method. You can access the dataset [here](Dataset).
-In addition, we also put camera location ```output_sfm``` folder that was provided by _SfM_ method.
-If you wish to use a different dataset, you can process it using the following command:
-```bash
-ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH/output_sfm
-```
-Please note that if your custom dataset has _mask_ folder, it must be placed at the same directory level as the images folder.
-The SfM method will utilize the mask folder if it is available. Otherwise, SfM will assume background and foreground.
-## 3. 🏋️‍♂️ Training
-To effectively train the _MIS-NeRF_ model, we recommend using the following code snippet:
-```bash
-# Train model
-ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data  
-```
-## 4. 📊 Evaluation
-To evaluate your trained model on the test dataset and compute the photometric metrics, you can run the following command:
-```bash
-ns-render dataset --load-config YOUR/PATH/config.yml
-```
-The metrics CSV file can be found in the `renders` folder.
+    .project-links a:hover {
+      background: var(--surface);
+      text-decoration: none;
+    }
 
-## 📖 Citation
+    h2 {
+      margin: 38px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: clamp(1.35rem, 3vw, 1.7rem);
+      line-height: 1.3;
+    }
 
-If you find MIS-NeRF useful, please cite our paper:
+    h3 {
+      margin: 24px 0 10px;
+      font-size: 1.15rem;
+      line-height: 1.4;
+    }
 
-##### ["MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery."](https://doi.org/10.1007/s11548-025-03429-7)
+    p { margin: 12px 0; }
 
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
 
-```bibtex
-@article{Khojasteh2025,
-  author    = {Samad Barri Khojasteh and David Fuentes-Jimenez and Daniel Pizarro and Yamid Espinel and Adrien Bartoli},
-  title     = {MIS-NeRF: neural radiance fields in minimally-invasive surgery},
-  journal   = {International Journal of Computer Assisted Radiology and Surgery},
-  year      = {2025},
-  doi       = {10.1007/s11548-025-03429-7},
-  url       = {https://doi.org/10.1007/s11548-025-03429-7}
-}
+    a:hover { text-decoration: underline; }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    :not(pre) > code {
+      padding: 0.15em 0.35em;
+      background: var(--surface);
+      border-radius: 5px;
+      font-size: 0.9em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0 22px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    pre code { padding: 0; background: transparent; }
+
+    .citation {
+      overflow-wrap: anywhere;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent);
+      background: var(--surface);
+      border-radius: 0 6px 6px 0;
+    }
+
+    footer {
+      margin-top: 44px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .container { width: min(100% - 28px, 1000px); padding-top: 24px; }
+      pre { font-size: 0.8rem; padding: 12px; }
+      .hero-gif { border-radius: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>MIS-NeRF</h1>
+      <p class="subtitle">Neural Radiance Fields in Minimally-Invasive Surgery</p>
+      <img class="hero-gif" src="assets/merged2.gif" alt="MIS-NeRF reconstruction demonstration">
+      <nav class="project-links" aria-label="Project links">
+        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF" target="_blank" rel="noopener noreferrer">View Source Code</a>
+        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF/blob/main/README.md" target="_blank" rel="noopener noreferrer">Documentation (README)</a>
+        <a href="https://doi.org/10.1007/s11548-025-03429-7" target="_blank" rel="noopener noreferrer">Read the Paper</a>
+      </nav>
+    </header>
+
+    <section id="about">
+      <h2>📝 About</h2>
+      <p>
+        Minimally-Invasive Surgery (MIS) reduces trauma compared to open surgery but is challenging for endophytic lesion localisation.
+        Augmented Reality (AR) is a promising assistance technology that superimposes a preoperative 3D lesion model onto MIS images.
+        This requires solving the difficult problem of 3D model-to-MIS-image registration. We propose MIS-NeRF, a Neural Radiance Field
+        (NeRF) that provides high-fidelity intraoperative 3D reconstruction, used to bootstrap Iterative Closest Point (ICP) registration.
+      </p>
+    </section>
+
+    <section id="installation">
+      <h2>1. 🚀 Installation and Setup the Environment</h2>
+      <h3>📦 Dependencies</h3>
+      <p>
+        MIS-NeRF is developed upon the Nerfstudio framework and
+        <a href="https://docs.nerf.studio/nerfology/methods/nerfacto.html" target="_blank" rel="noopener noreferrer">Nerfacto</a>,
+        so the requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF.
+      </p>
+      <p>
+        We developed a modified version <code>v1.0.0</code> of Nerfstudio, which can be accessed
+        <a href="https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">here</a>.
+      </p>
+    </section>
+
+    <section id="dataset">
+      <h2>2. 📂 Synthetic Liver Dataset</h2>
+      <p>
+        This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks.
+        The RGB images and depth maps were generated using Blender, while the masks were produced using the
+        <a href="https://github.com/facebookresearch/segment-anything" target="_blank" rel="noopener noreferrer">Segment Anything Model (SAM)</a>.
+      </p>
+      <p>
+        You can access the dataset
+        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF/tree/main/Dataset" target="_blank" rel="noopener noreferrer">here</a>.
+        The camera locations provided by the SfM method are also included in the <code>output_sfm</code> folder.
+      </p>
+      <p>If you wish to use a different dataset, you can process it using the following command:</p>
+      <pre><code>ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH/output_sfm</code></pre>
+      <p>
+        If your custom dataset has a <code>mask</code> folder, it must be placed at the same directory level as the <code>images</code> folder.
+        The SfM method will use the mask folder if it is available. Otherwise, SfM will estimate the foreground and background without masks.
+      </p>
+    </section>
+
+    <section id="training">
+      <h2>3. 🏋️‍♂️ Training</h2>
+      <p>To train the <em>MIS-NeRF</em> model, we recommend using the following command:</p>
+      <pre><code># Train model
+ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data</code></pre>
+    </section>
+
+    <section id="evaluation">
+      <h2>4. 📊 Evaluation</h2>
+      <p>To evaluate your trained model on the test dataset and compute photometric metrics, run:</p>
+      <pre><code>ns-render dataset --load-config YOUR/PATH/config.yml</code></pre>
+      <p>The metrics CSV file can be found in the <code>renders</code> folder.</p>
+    </section>
+
+    <section id="citation">
+      <h2>📖 Citation</h2>
+      <p>If you find MIS-NeRF useful, please cite our paper:</p>
+      <p class="citation">
+        <a href="https://doi.org/10.1007/s11548-025-03429-7" target="_blank" rel="noopener noreferrer">
+          MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery
+        </a>
+      </p>
+      <pre><code>@article{Khojasteh2025,
+  author  = {Samad Barri Khojasteh and David Fuentes-Jimenez and Daniel Pizarro and Yamid Espinel and Adrien Bartoli},
+  title   = {MIS-NeRF: neural radiance fields in minimally-invasive surgery},
+  journal = {International Journal of Computer Assisted Radiology and Surgery},
+  year    = {2025},
+  doi     = {10.1007/s11548-025-03429-7},
+  url     = {https://doi.org/10.1007/s11548-025-03429-7}
+}</code></pre>
+    </section>
+
+    <footer>
+      MIS-NeRF · Neural Radiance Fields in Minimally-Invasive Surgery
+    </footer>
+  </main>
+</body>
+</html>
