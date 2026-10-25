@@ -1,5 +1,7 @@
 
-<h1 align="center">MIS-NeRF</h1>
+<h1 align="center">
+  <a href="https://doi.org/10.1007/s11548-025-03429-7">MIS-NeRF</a>
+</h1>
 <h2 align="center"> Neural Radiance Fields in Minimally-Invasive Surgery </h2>
 
 <p align="center">
@@ -52,9 +54,8 @@ The metrics CSV file can be found in the `renders` folder.
 
 If you find MIS-NeRF useful, please cite our paper:
 
-##### "MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery."
+##### ["MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery."](https://doi.org/10.1007/s11548-025-03429-7)
 
-[https://doi.org/10.1007/s11548-025-03429-7](https://doi.org/10.1007/s11548-025-03429-7)
 
 ```bibtex
 @article{Khojasteh2025,
