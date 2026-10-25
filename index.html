@@ -32,10 +32,23 @@
     .container {
       width: min(100% - 40px, 1000px);
       margin: 0 auto;
-      padding: 32px 0 56px;
+      padding: 8px 0 56px;
     }
 
-    header { text-align: center; }
+    .hero {
+      background: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    .hero-inner {
+      width: min(100% - 40px, 1000px);
+      margin: 0 auto;
+      padding: 40px 0 8px;
+    }
+
+    .hero .subtitle { color: #c9d1d9; }
+    .hero .project-links { margin-bottom: 32px; }
 
     h1 {
       margin: 0;
@@ -69,7 +82,9 @@
     }
 
     .project-links a {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 8px 14px;
       border: 1px solid var(--border);
       border-radius: 7px;
@@ -83,6 +98,15 @@
       background: var(--surface);
       text-decoration: none;
     }
+
+    .project-links svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .project-links .github-icon { fill: #000; }
+    .project-links .icon-stroke { fill: none; stroke: currentColor; }
 
     h2 {
       margin: 38px 0 14px;
@@ -140,6 +164,67 @@
       border-radius: 0 6px 6px 0;
     }
 
+    /* Citation modal */
+    dialog.cite-dialog {
+      width: min(100% - 32px, 720px);
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: #fff;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    dialog.cite-dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
+
+    .cite-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cite-header h2 {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 1.15rem;
+    }
+
+    .cite-body { padding: 16px 18px 18px; }
+    .cite-body p { margin: 0 0 10px; }
+    .cite-body pre { margin: 0 0 14px; }
+
+    .cite-actions { display: flex; gap: 10px; }
+
+    .btn {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--link);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: var(--surface); }
+
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1a5fd0; }
+
+    .close-btn {
+      border: 0;
+      background: transparent;
+      font-size: 1.6rem;
+      line-height: 1;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .close-btn:hover { color: var(--text); }
+
     footer {
       margin-top: 44px;
       padding-top: 18px;
@@ -150,23 +235,36 @@
     }
 
     @media (max-width: 600px) {
-      .container { width: min(100% - 28px, 1000px); padding-top: 24px; }
+      .container { width: min(100% - 28px, 1000px); padding-top: 8px; }
+      .hero-inner { width: min(100% - 28px, 1000px); padding-top: 28px; }
       pre { font-size: 0.8rem; padding: 12px; }
       .hero-gif { border-radius: 5px; }
     }
   </style>
 </head>
 <body>
-  <main class="container">
-    <header>
+  <header class="hero">
+    <div class="hero-inner">
       <h1>MIS-NeRF</h1>
       <p class="subtitle">Neural Radiance Fields in Minimally-Invasive Surgery</p>
       <img class="hero-gif" src="assets/merged2.gif" alt="MIS-NeRF reconstruction demonstration">
       <nav class="project-links" aria-label="Project links">
-        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF" target="_blank" rel="noopener noreferrer">View Source Code</a>
-        <a href="https://doi.org/10.1007/s11548-025-03429-7" target="_blank" rel="noopener noreferrer">Read the Paper</a>
+        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF" target="_blank" rel="noopener noreferrer">
+          <svg class="github-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          Source Code
+        </a>
+        <a href="https://doi.org/10.1007/s11548-025-03429-7" target="_blank" rel="noopener noreferrer">
+          <svg class="icon-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          Read the Paper
+        </a>
+        <a href="#" id="cite-btn" role="button">
+          <svg class="icon-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 4-4 4z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h3c0 3-1 4-4 4z"/></svg>
+          Cite this Paper
+        </a>
       </nav>
-    </header>
+    </div>
+  </header>
+  <main class="container">
 
     <section id="about">
       <h2>📝 About</h2>
@@ -226,10 +324,19 @@ ns-train nerfacto --pipeline.model.background-color random --pipeline.model.pred
       <p>The metrics CSV file can be found in the <code>renders</code> folder.</p>
     </section>
 
-    <section id="citation">
-      <h2>📖 Citation</h2>
-      <p>If you find MIS-NeRF useful, please cite our paper:</p>
-      <pre><code>@article{Khojasteh2025,
+    <footer>
+      <p>If you find MIS-NeRF useful, please <a href="#" id="cite-footer">cite our paper</a>.</p>
+      <p>MIS-NeRF · Neural Radiance Fields in Minimally-Invasive Surgery</p>
+    </footer>
+  </main>
+
+  <dialog class="cite-dialog" id="cite-dialog" aria-labelledby="cite-title">
+    <div class="cite-header">
+      <h2 id="cite-title">📖 Cite this Paper</h2>
+      <button class="close-btn" id="cite-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="cite-body">
+<pre><code id="cite-text">@article{Khojasteh2025,
   author  = {Samad Barri Khojasteh and David Fuentes-Jimenez and Daniel Pizarro and Yamid Espinel and Adrien Bartoli},
   title   = {MIS-NeRF: neural radiance fields in minimally-invasive surgery},
   journal = {International Journal of Computer Assisted Radiology and Surgery},
@@ -237,11 +344,55 @@ ns-train nerfacto --pipeline.model.background-color random --pipeline.model.pred
   doi     = {10.1007/s11548-025-03429-7},
   url     = {https://doi.org/10.1007/s11548-025-03429-7}
 }</code></pre>
-    </section>
+      <div class="cite-actions">
+        <button class="btn btn-primary" id="copy-btn">Copy citation</button>
+        <button class="btn" id="cite-close2">Close</button>
+      </div>
+    </div>
+  </dialog>
 
-    <footer>
-      MIS-NeRF · Neural Radiance Fields in Minimally-Invasive Surgery
-    </footer>
-  </main>
+  <script>
+    (function () {
+      var dialog = document.getElementById('cite-dialog');
+      var copyBtn = document.getElementById('copy-btn');
+      var text = document.getElementById('cite-text').textContent;
+
+      ['cite-btn', 'cite-footer'].forEach(function (id) {
+        document.getElementById(id).addEventListener('click', function (e) {
+          e.preventDefault();
+          dialog.showModal();
+        });
+      });
+      document.getElementById('cite-close').addEventListener('click', function () { dialog.close(); });
+      document.getElementById('cite-close2').addEventListener('click', function () { dialog.close(); });
+      dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
+
+      function done(ok) {
+        copyBtn.textContent = ok ? 'Copied ✓' : 'Press Ctrl+C to copy';
+        setTimeout(function () { copyBtn.textContent = 'Copy citation'; }, 2000);
+      }
+
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        dialog.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) {}
+        dialog.removeChild(ta);
+        done(ok);
+      }
+
+      copyBtn.addEventListener('click', function () {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+        } else {
+          fallback();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
