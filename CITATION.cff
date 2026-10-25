@@ -1,7 +1,6 @@
 cff-version: 1.2.0
 message: "If you find MIS-NeRF useful, please cite our paper."
 title: "MIS-NeRF: neural radiance fields in minimally-invasive surgery"
-type: article
 authors:
   - family-names: "Barri Khojasteh"
     given-names: "Samad"
@@ -13,8 +12,22 @@ authors:
     given-names: "Yamid"
   - family-names: "Bartoli"
     given-names: "Adrien"
-journal: "International Journal of Computer Assisted Radiology and Surgery"
-year: 2025
-doi: "10.1007/s11548-025-03429-7"
-url: "https://doi.org/10.1007/s11548-025-03429-7"
 repository-code: "https://github.com/samadbarrikhojasteh/MIS-NeRF"
+preferred-citation:
+  type: article
+  title: "MIS-NeRF: neural radiance fields in minimally-invasive surgery"
+  authors:
+    - family-names: "Barri Khojasteh"
+      given-names: "Samad"
+    - family-names: "Fuentes-Jimenez"
+      given-names: "David"
+    - family-names: "Pizarro"
+      given-names: "Daniel"
+    - family-names: "Espinel"
+      given-names: "Yamid"
+    - family-names: "Bartoli"
+      given-names: "Adrien"
+  journal: "International Journal of Computer Assisted Radiology and Surgery"
+  year: 2025
+  doi: "10.1007/s11548-025-03429-7"
+  url: "https://doi.org/10.1007/s11548-025-03429-7"
