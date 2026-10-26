@@ -1,15 +1,16 @@
-<h1 align="center">MIS-NeRF</h1>
-<h2 align="center">Neural Radiance Fields in Minimally-Invasive Surgery</h2>
+<h1 align="center">MIS-NeRF</h1> 
+<h2 align="center">Neural Radiance Fields in Minimally-Invasive Surgery</h2> 
 
-<p align="center">
-  <img src="assets/merged2.gif" width="100%" alt="MIS-NeRF reconstruction demonstration"/>
+<p align="center"> 
+  <img src="assets/merged2.gif" width="100%" alt="MIS-NeRF reconstruction demonstration"/> 
+</p> 
+
+<p align="center"> 
+  <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF"><img src="assets/btn-source.svg" height="44" alt="Source Code"></a> &nbsp; 
+  <a href="https://doi.org/10.1007/s11548-025-03429-7"><img src="assets/btn-paper.svg" height="44" alt="Read the Paper"></a> &nbsp; 
+  <a href="#-citation"><img src="assets/btn-cite.svg" height="44" alt="Cite this Paper"></a> 
 </p>
 
-<p align="center">
-  <a href="https://samadbarrikhojasteh.github.io/MIS-NeRF/"><b>🌐 Project Website</b></a> &nbsp;|&nbsp;
-  <a href="https://doi.org/10.1007/s11548-025-03429-7"><b>📄 Read the Paper</b></a> &nbsp;|&nbsp;
-  <a href="#-citation"><b>📖 Cite this Paper</b></a>
-</p>
 
 ## 📝 About
 
@@ -58,7 +59,7 @@ The metrics CSV file can be found in the `renders` folder.
 
 ## 📖 Citation
 
-If you find MIS-NeRF useful, please cite our paper: [MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery](https://doi.org/10.1007/s11548-025-03429-7)
+If you find MIS-NeRF useful, please cite our paper.
 
 ```bibtex
 @article{Khojasteh2025,
