@@ -307,7 +307,7 @@
         highlights. Third, it uses a regularised compound loss to enhance surface reconstruction.
       </p>
       <figure>
-        <img src="assets/MIS-NeRF_1.jpg" style="width: 70%; margin: 0 auto;" alt="Overview of the MIS-NeRF method" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="assets/MIS-NeRF_1.jpg" style="width: 80%; margin: 0 auto;" alt="Overview of the MIS-NeRF method" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="img-placeholder" style="display:none">
           <span>🖼️ Image placeholder<br><code>assets/method.png</code></span>
         </div>
@@ -318,14 +318,18 @@
       <h2>🩺 MIS-NeRF for Registration</h2>
       <p>
         The 3D surface reconstructed by MIS-NeRF is used to bootstrap Iterative Closest Point (ICP) registration,
-        which aligns the preoperative 3D lesion model with the intraoperative MIS images for Augmented Reality.
+        which aligns the preoperative 3D lesion model with the intraoperative MIS images for AR.
       </p>
       <figure>
-        <img src="assets/MIS-NeRF_overview.jpg" style="width: 80%; margin: 0 auto;" alt="MIS-NeRF used for 3D model-to-image registration" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img src="assets/MIS-NeRF_overview.jpg" style="width: 100%; margin: 0 auto;" alt="MIS-NeRF used for 3D model-to-image registration" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="img-placeholder" style="display:none">
           <span>🖼️ Image placeholder<br><code>assets/MIS-NeRF_overview.jpg</code></span>
         </div>
       </figure>
+            <p>
+        ICP requires a coarse initialisation, which we provide using Procrustes analysis from a small set of at least 4 manually selected point correspondences, with one-point set specified on the preoperative 3D model and one-point set specified on any MIS image and 
+        automatically reconstructed using the intraoperative 3D model. This process does not need to be very accurate since coarsely aligning themodels is enough to bootstrap ICP.
+      </p>
     </section>
 
     <footer>
