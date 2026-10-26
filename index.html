@@ -124,6 +124,28 @@
 
     p { margin: 12px 0; }
 
+    figure { margin: 18px 0; }
+
+    .img-placeholder {
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      padding: 24px;
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
     a {
       color: var(--link);
       text-decoration: none;
@@ -276,52 +298,35 @@
       </p>
     </section>
 
-    <section id="installation">
-      <h2>1. 🚀 Installation and Setup the Environment</h2>
-      <h3>📦 Dependencies</h3>
+    <section id="method">
+      <h2>🔬 Method</h2>
       <p>
-        MIS-NeRF is developed upon the Nerfstudio framework and
-        <a href="https://docs.nerf.studio/nerfology/methods/nerfacto.html" target="_blank" rel="noopener noreferrer">Nerfacto</a>,
-        so the requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF.
+        Existing NeRF methods break down in MIS because of the moving light source and specular highlights. The proposed MIS-NeRF
+        is adapted to these conditions. First, it incorporates the camera centre as an additional input to the radiance function,
+        which allows MIS-NeRF to handle the moving light source. Second, it uses a modified volume rendering which handles specular
+        highlights. Third, it uses a regularised compound loss to enhance surface reconstruction.
       </p>
-      <p>
-        We developed a modified version <code>v1.0.0</code> of Nerfstudio, which can be accessed
-        <a href="https://github.com/nerfstudio-project/nerfstudio/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">here</a>.
-      </p>
+      <figure>
+        <img src="assets/method.png" alt="Overview of the MIS-NeRF method" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-placeholder" style="display:none">
+          <span>🖼️ Image placeholder<br><code>assets/method.png</code></span>
+        </div>
+      </figure>
     </section>
 
-    <section id="dataset">
-      <h2>2. 📂 Synthetic Liver Dataset</h2>
+    <section id="registration">
+      <h2>🩺 MIS-NeRF for Registration</h2>
+      <!-- Edit this paragraph as you like -->
       <p>
-        This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks.
-        The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model
-        <a href="https://github.com/facebookresearch/segment-anything" target="_blank" rel="noopener noreferrer"> (SAM)</a>.
+        The high-fidelity 3D surface reconstructed by MIS-NeRF is used to bootstrap Iterative Closest Point (ICP) registration,
+        which aligns the preoperative 3D lesion model with the intraoperative MIS images for Augmented Reality.
       </p>
-      <p>
-        You can access the dataset
-        <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF/tree/main/Dataset" target="_blank" rel="noopener noreferrer">here</a>.
-        The camera locations provided by the SfM method are also included in the <code>output_sfm</code> folder.
-      </p>
-      <p>If you wish to use a different dataset, you can process it using the following command:</p>
-      <pre><code>ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH/output_sfm</code></pre>
-      <p>
-        If your custom dataset has a <code>mask</code> folder, it must be placed at the same directory level as the <code>images</code> folder.
-        The SfM method will use the mask folder if it is available. Otherwise, SfM will estimate the foreground and background without masks.
-      </p>
-    </section>
-
-    <section id="training">
-      <h2>3. 🏋️‍♂️ Training</h2>
-      <p>To train the <em>MIS-NeRF</em> model, we recommend using the following command:</p>
-      <pre><code># Train model
-ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data</code></pre>
-    </section>
-
-    <section id="evaluation">
-      <h2>4. 📊 Evaluation</h2>
-      <p>To evaluate your trained model on the test dataset and compute photometric metrics, run:</p>
-      <pre><code>ns-render dataset --load-config YOUR/PATH/config.yml</code></pre>
-      <p>The metrics CSV file can be found in the <code>renders</code> folder.</p>
+      <figure>
+        <img src="assets/registration.png" alt="MIS-NeRF used for 3D model-to-image registration" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-placeholder" style="display:none">
+          <span>🖼️ Image placeholder<br><code>assets/registration.png</code></span>
+        </div>
+      </figure>
     </section>
 
     <footer>
