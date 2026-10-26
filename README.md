@@ -6,7 +6,7 @@
 </p> 
 
 <p align="center"> 
-  <a href="https://github.com/samadbarrikhojasteh/MIS-NeRF"><img src="assets/btn-source.svg" height="44" alt="Source Code"></a> &nbsp; 
+  <a href="https://samadbarrikhojasteh.github.io/MIS-NeRF/"><img src="assets/btn-website.svg" height="44" alt="Source Code"></a> &nbsp; 
   <a href="https://doi.org/10.1007/s11548-025-03429-7"><img src="assets/btn-paper.svg" height="44" alt="Read the Paper"></a> &nbsp; 
   <a href="#-citation"><img src="assets/btn-cite.svg" height="44" alt="Cite this Paper"></a> 
 </p>
