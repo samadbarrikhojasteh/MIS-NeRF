@@ -12,10 +12,6 @@
 </p>
 
 
-## 📝 About
-
-Minimally-Invasive Surgery (MIS) reduces trauma compared to open surgery but is challenging for endophytic lesion localisation. Augmented Reality (AR) is a promising assistance technology that superimposes a preoperative 3D lesion model onto MIS images. This requires solving the difficult problem of 3D model-to-MIS-image registration. We propose MIS-NeRF, a Neural Radiance Field (NeRF) that provides high-fidelity intraoperative 3D reconstruction, used to bootstrap Iterative Closest Point (ICP) registration.
-
 ## 1. 🚀 Installation and Setup the Environment
 
 ### 📦 Dependencies
