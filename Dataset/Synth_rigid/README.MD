@@ -1,5 +1,5 @@
 # Datasets
 
-This directory contains the datasets used in NeRF2Reg experiments.
+This directory contains the datasets used in MIS-NeRF experiments.
 
-- Synth_Dynamic: Synthetic dynamic liver dataset.
+- Synth_rigid: Synthetic Rigid liver dataset.
