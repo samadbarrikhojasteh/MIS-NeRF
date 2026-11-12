@@ -7,38 +7,54 @@
 </p>
 
 
-
-## 📝About
-
-
-Minimally-Invasive Surgery (MIS) reduces the trauma compared to open surgery but is challenging for endophytic lesion localisation. Augmented
-Reality (AR) is a promising assistance, which superimposes a preoperative 3D lesion model onto the MIS images. It requires solving the difficult problem of
-3D model to MIS image registration. We propose MIS-NeRF, a Neural Radiance Field (NeRF) which provides high-fidelity intraoperative 3D reconstruction, used
-to bootstrap Iterative Closest Point (ICP) registration.
-
-
-
-## 1. 🚀 Installation and Setup the environment 🚀
+## 1. 🚀 Installation and Environment Setup
 
 ### 📦 Dependencies
 
-Since MIS-NeRF is developed upon the Nerfstudio framework and [Nerfacto](https://docs.nerf.studio/nerfology/methods/nerfacto.html), all requirements and dependencies of Nerfstudio remain applicable to MIS-NeRF.
-## 2. 📂 Synthetic liver dataset
-This repository includes a synthetic liver experiment dataset consisting of RGB images, depth maps, and corresponding masks. 
-The RGB images and depth maps were generated using Blender, while the masks were produced using the Segment Anything Model ([SAM](https://github.com/facebookresearch/segment-anything)). 
-method. You can access the dataset [here](Dataset).
-In addition, we also put camera location ```output_sfm``` folder that was provided by _SfM_ method.
-If you wish to use a different dataset, you can process it using the following command:
+MIS-NeRF is built upon the [Nerfstudio framework](https://docs.nerf.studio/) and its [Nerfacto method](https://docs.nerf.studio/nerfology/methods/nerfacto.html). Therefore, the dependencies and system requirements of Nerfstudio also apply to MIS-NeRF.
+
+### ⚙️ Installation
+
+To simplify the setup process, an `install.sh` script is provided in the repository. It automates the installation of the required dependencies and the MIS-NeRF environment.
+
+Clone the repository:
+
 ```bash
-ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH/output_sfm
+git clone https://github.com/samadbarrikhojasteh/MIS-NeRF.git 
 ```
-Please note that if your custom dataset has _mask_ folder, it must be placed at the same directory level as the images folder.
-The SfM method will utilize the mask folder if it is available. Otherwise, SfM will assume background and foreground.
-## 3. 🏋️‍♂️ Training
-To effectively train the _MIS-NeRF_ model, we recommend using the following code snippet:
+navigate to its root directory:
 ```bash
-# Train model
-ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data  
+cd MIS-NeRF 
+```
+and run:
+```bash
+chmod +x install.sh
+./install.sh
+```
+## 2. 📂 Synthetic Liver Dataset
+
+This repository includes a synthetic rigid liver experiment dataset consisting of RGB images, depth maps, and corresponding masks.
+
+The RGB images and depth maps were generated using Blender, while the masks were obtained using the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything).
+
+You can access the dataset in the [`Dataset/Synth_rigid`](Dataset/Synth_rigid) directory.
+
+In addition, the SfM outputs and camera poses are available in the `output_sfm` folder.
+
+If you wish to use a different dataset, you can process it using the following command:
+
+```bash
+ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH
+```
+
+**Note:** If your custom dataset includes a `masks` folder, it must be placed at the same directory level as the `images` folder before processing. Otherwise, SfM assumes that the images contain foreground and background regions without the provided masks.
+
+## 3. 🏋️‍♂️ Training
+
+To train the MIS-NeRF model, use the following command:
+
+```bash
+ns-train nerfacto --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data
 ```
 ## 4. 📊 Evaluation
 To evaluate your trained model on the test dataset and compute the photometric metrics, you can run the following command:
@@ -50,11 +66,6 @@ The metrics CSV file can be found in the `renders` folder.
 ## 📖 Citation
 
 If you find MIS-NeRF useful, please cite our paper:
-
-##### "MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery."
-
-[https://doi.org/10.1007/s11548-025-03429-7](https://doi.org/10.1007/s11548-025-03429-7)
-
 ```bibtex
 @article{Khojasteh2025,
   author    = {Samad Barri Khojasteh and David Fuentes-Jimenez and Daniel Pizarro and Yamid Espinel and Adrien Bartoli},
