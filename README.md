@@ -57,6 +57,8 @@ ns-process-data images --sfm-tool colmap --data /YOUR/DATA/PATH/images --output-
 </div>
 
 ## 3. 🏋️‍♂️ Training
+<div align="justify">
+
 To train the MIS-NeRF model, run the following command:
 
 ```bash
@@ -69,8 +71,14 @@ ns-train nerfacto \
     nerfstudio-data
 ```
 Replace `/YOUR/DATA/PATH` with the directory containing your processed dataset and `/YOUR/OUTPUT/PATH` with the desired directory for saving the training outputs.
+</div>
 ## 4. 📊 Evaluation
+
+<div align="justify">
+
 To evaluate your trained model on the test dataset and compute the photometric metrics, you can run the following command:
+</div>
+
 ```bash
 ns-render dataset --load-config /YOUR/PATH/config.yml
 ```
@@ -85,7 +93,6 @@ An example is provided in [`preop_landmarks.txt`](Dataset/Synth_rigid/preop_land
 
 To run the ICP registration, use the following command:
 
-</div>
 ```bash
 python ICP/MIS_ICP.py \
     --dir /YOUR/OUTPUT/SfM/PATH \
@@ -94,7 +101,6 @@ python ICP/MIS_ICP.py \
     --preop_landmarks /YOUR/PREOPERATIVE/LANDMARKS/PATH/preop_landmarks.txt \
     --intraop_landmarks /YOUR/INTRAOPERATIVE/LANDMARKS/PATH/intraop_landmarks.txt
 ```
-<div align="justify">
 
 The `--intraop_landmarks` argument is optional. If it is not provided, the script allows you to interactively select the corresponding landmarks on the first intraoperative RGB image. The selected 2D coordinates are then used by the script to obtain their corresponding 3D points from the reconstructed model and save under 
 `intraop_landmarks.txt`.
