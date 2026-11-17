@@ -35,7 +35,7 @@ chmod +x install.sh
 
 This repository includes a synthetic rigid liver experiment dataset consisting of RGB images, depth maps, and corresponding masks.
 
-The RGB images and depth maps were generated using Blender, while the masks were obtained using the [Segment Anything Model (SAM)](https://github.com/facebookresearch/segment-anything).
+The RGB images and depth maps were generated using Blender, while the masks were obtained using the [SAM](https://github.com/facebookresearch/segment-anything).
 
 You can access the dataset in the [`Dataset/Synth_rigid`](Dataset/Synth_rigid) directory.
 
@@ -44,24 +44,26 @@ In addition, the SfM outputs and camera poses are available in the `output_sfm` 
 If you wish to use a different dataset, you can process it using the following command:
 
 ```bash
-ns-process-data images --sfm-tool colmap --data data/YOUR/DATA/PATH/images --output-dir data/YOUR/OUTPUT/PATH
+ns-process-data images --sfm-tool colmap --data /YOUR/DATA/PATH/images --output-dir /YOUR/OUTPUT/PATH
 ```
 
-**Note:** If your custom dataset includes a `masks` folder, it must be placed at the same directory level as the `images` folder before processing. Otherwise, SfM assumes that the images contain foreground and background regions without the provided masks.
+**Note:** If your custom dataset includes a `mask` folder, it must be placed at the same directory level as the `images` folder before processing. Otherwise, SfM assumes that the images contain foreground and background regions without the provided masks.
 
 ## 3. 🏋️‍♂️ Training
 
 To train the MIS-NeRF model, use the following command:
 
 ```bash
-ns-train nerfacto --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data data/YOUR/DATA/PATH --output-dir data/YOUR/OUTPUT/PATH nerfstudio-data
+ns-train nerfacto --pipeline.model.background-color random --pipeline.model.predict-normals True --pipeline.model.camera-optimizer.mode off --data /YOUR/DATA/PATH --output-dir /YOUR/OUTPUT/PATH nerfstudio-data
 ```
 ## 4. 📊 Evaluation
 To evaluate your trained model on the test dataset and compute the photometric metrics, you can run the following command:
 ```bash
-ns-render dataset --load-config YOUR/PATH/config.yml
+ns-render dataset --load-config /YOUR/PATH/config.yml
 ```
 The metrics CSV file can be found in the `renders` folder.
+## 5. 🔄 ICP Registration
+
 
 ## 📖 Citation
 

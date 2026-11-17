@@ -1,8 +1,7 @@
 # icp_function(): Apply Iterative closest point to the both 3D models(PreOperative and IntraOperative) and
 # Project tumors, veins and also preop model to the intraoperative images.
 # depth_compare() : Comparison surface depth between reconstructed model according to the pose and GT depth map
-import cv2
-from osgeo_utils.samples.build_jp2_from_xml import marker_map
+
 from trimesh.registration import icp, procrustes
 import matplotlib.pyplot as plt
 import matplotlib
@@ -10,6 +9,7 @@ matplotlib.use('TkAgg')
 import point_cloud_utils as pcu
 import numpy as np
 import pandas as pd
+import argparse
 import os
 
 def rotation_matrix(a, b):
@@ -122,35 +122,27 @@ def icp_function():
     and the first image of the dataset.
     :return: Plotting 3D models.
     """
+    parser = argparse.ArgumentParser(description="ICP Registration")
 
-    # Load the source and target meshes
-    dir = "/data1/data_in_nerfstudio/data/uterus/output_MIS"
-    source_path = "/data1/data_in_nerfstudio/data/uterus/test/output_MIS/nerfacto/2024-12-09_140212/mesh/poisson_mesh2.ply"
-    target_path = "/data1/data_in_nerfstudio/data/uterus/models/uterus2.obj"
+    parser.add_argument("--dir", type=str, required=True, help="Output directory")
+    parser.add_argument("--source_path", type=str, required=True, help="Path to the reconstructed Interaction Mesh")
+    parser.add_argument("--target_path", type=str, required=True, help="Path to the preoperative model")
+    parser.add_argument("--preop_landmarks", type=str, required=True, help="Path to preoperative landmarks (.txt)")
+    parser.add_argument("--intraop_landmarks", type=str, required=False, help="Path to corresponding intraoperative landmarks (.txt)")
 
-    #Put path for each of them if you want register if on the RGBs
-    preop_path = None
-    tumor_path = None
-    vein_path = None
+    args = parser.parse_args()
+
+    dir = args.dir
+    source_path = args.source_path
+    target_path = args.target_path
+    preop = np.loadtxt(args.preop_landmarks)
+
 
     target_mesh, target_faces = pcu.load_mesh_vf(target_path)
     source_mesh, source_faces = pcu.load_mesh_vf(source_path)
 
-    if tumor_path is not None: tumor_mesh = pcu.load_mesh_v(tumor_path)
-    else:
-        tumor_mesh = None
-    if vein_path is not None: vein_mesh = pcu.load_mesh_v(vein_path)
-    else:
-        vein_mesh = None
-    if preop_path is not None: preop_mesh = pcu.load_mesh_v(preop_path)
-    else:
-        preop_mesh = None
-
-
     source_before = source_mesh
     target = target_mesh
-    tumor_list = []
-    vein_list = []
 
     # Take manually landmark 3D points (Global Initialization)
     # Read camera poses (json file)
@@ -169,17 +161,16 @@ def icp_function():
             image_coords.append(image_coordinates)
             uv.append(uv_z)
 
-    # Put 3D landmark points of Preoperative model (4 or 5 points)
-    preop = np.array(
-        [[-36.926796, 5.000504, -65.496605],
-         [-2.894148, -10.476115, -36.340618],
-         [-2.272520, -2.539776, -74.024872],
-         [33.216587, 1.612050, -53.025105]])
 
     #Perform landmark selection on the RGBs then produce corresponding world camera coords wrt camera each C2W
-    nerfacto = landmark(dir, w2c, K, image_coords, uv)
+    if args.intraop_landmarks is not None:
+        nerfacto =  np.loadtxt(args.intraop_landmarks)
+    else:
+        nerfacto = landmark(dir, w2c, K, image_coords, uv)
+
     # Procrusting to get global initial transformation
-    if nerfacto and preop is None: raise ValueError("Preop and Nerfacto 3D points are not identified")
+    if preop is None: raise ValueError("Preop 3D points are not identified")
+
     initial_transformation, transformed, _ = procrustes(nerfacto, preop, weights=None, reflection= False, translation= True, scale=True, return_cost=True)
 
     # Perform ICP registration
@@ -187,44 +178,26 @@ def icp_function():
     transformation, transformed_a, cost, total_costs = icp(source_before, target, initial=initial_transformation, threshold=1e-5, max_iterations=20)
 
     # convert MSE that comes from ICP(cost) into RMSE between transformed source and target
-    mean_distance = np.sqrt(np.stack(total_costs))
-    # we use transformed(by ICP) source to get Chamfer distance error
-    source = transformed_a
+    sqrt_distance = np.sqrt(np.stack(total_costs))
 
     # Ensure row-major order
-    source = np.ascontiguousarray(source, dtype=np.float32)
+    source = np.ascontiguousarray(transformed_a, dtype=np.float32)
     target = np.ascontiguousarray(target, dtype=np.float32)
     # use one side Chamfer (only compute mean distance from source to target)
     chamfer_distance = one_sided_chamfer_distance(source, target)
-    total_costs = np.append(mean_distance, np.array(chamfer_distance))
+    total_costs = np.append(sqrt_distance, np.array(chamfer_distance))
     costs = pd.DataFrame(total_costs)
     sequential = list(range(1, len(costs)+1))
     sequential[-1] = "chamfer Distance"
     costs.insert(0, 'ICP Iterations', sequential)
     costs.to_csv(os.path.join(dir, "ICP_errors.ods"))
 
-    #start to register tumor and vein coordinates(if available)
-    T_inv = np.linalg.inv(transformation)
-    if tumor_mesh is not None:
-        tumor = np.concatenate((tumor_mesh, np.ones((len(tumor_mesh), 1))), axis=1)
-        tumor_transfered = np.dot(tumor, T_inv.T)[:, :3]
-        tumor_list.append(tumor_transfered)
-    if vein_mesh is not None :
-        vein = np.concatenate((vein_mesh, np.ones((len(vein_mesh), 1))), axis=1)
-        vein_transfered = np.dot(vein, T_inv.T)[:, :3]
-        vein_list.append(vein_transfered)
-    # register Preop model on the RGBs
-    if preop_mesh is not None:
-        preop_vertices = np.concatenate((preop_mesh, np.ones((len(preop_mesh), 1))), axis=1)  # Pre-Op model
-        preop_transformed = np.dot(preop_vertices, T_inv.T)[:, :3]
-        tumor_list.append(preop_transformed)
-    if tumor_mesh is not None or vein_mesh is not None or preop_mesh is not None:
-        dir_tumor = os.path.join(dir, "tumor_preops")
-        os.makedirs(os.path.join(dir, "tumor_preops"), exist_ok=True)
-        # save registered images
-        w2img(w2c, fnames, K, tumor_list, vein_list, None, None, dir_tumor)
 
-
+    dir_depth_map = os.path.dirname(dir)
+    if os.path.exists(os.path.join(dir_depth_map, "depth")):
+        print("______________  COMPUTING DEPTH ERROR .... ________________")
+        depth_compare(w2c, K, source_path, dir)
+    else: print("______________  No exist GT depth maps .... ________________")
     # Visualize all meshes with the same size
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -404,7 +377,7 @@ def landmark(dir:str, w2c:dict, K, source_coords, uv):
     image_folder = sorted(os.listdir(dir_image))[0]
 
     img = cv2.imread(os.path.join(dir_image, image_folder))
-    plt.imshow(img)
+    # plt.imshow(img)
 
     pose = w2c[0]["frame"]
     c2w = np.linalg.inv(pose)# convert w2c into c2w
@@ -413,29 +386,38 @@ def landmark(dir:str, w2c:dict, K, source_coords, uv):
     depth_z = source_points[:, 2]
 
     #Select some landmark points on the first RGB image
+    plt.figure(figsize=(12, 8))
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    plt.title("Select landmarks (press ENTER when finished)")
 
-    selected_landmarks = np.array(([325, 625, 1],
-                                   [980, 30, 1],
-                                   [1033, 900, 1],
-                                   [1650, 550, 1])).astype(float)
+    points = plt.ginput(n=-1, timeout=0)
+    plt.close()
+
+    selected_2D_points = np.column_stack((np.array(points), np.ones(len(points)))).astype(float)
+
+    print("Selected landmarks:\n", selected_2D_points)
 
     z_c = []
     #select depth of the selected landmarks from source_points
     # Find the closest depth for the given (u, v)
-    for i in range(0, len(selected_landmarks)):
-        u = int(selected_landmarks[i][0])
-        v = int(selected_landmarks[i][1])
+    for i in range(0, len(selected_2D_points)):
+        u = int(selected_2D_points[i][0])
+        v = int(selected_2D_points[i][1])
         distances = np.linalg.norm(uv_source - np.array([u, v]), axis=1)
         closest_idx = np.argmin(distances)
         z_c.append(depth_z[closest_idx])
     z_depth = np.stack(z_c)
 
-    camera_land = np.dot(selected_landmarks, np.linalg.inv(K[:, 0:3]).T)
+    camera_land = np.dot(selected_2D_points, np.linalg.inv(K[:, 0:3]).T)
     #scale by depth
     camera_land_depth = camera_land * z_depth[:, None]
     camera_coords_homogeneous = np.concatenate((camera_land_depth, np.tile(np.array([[1]]), (int(len(camera_land_depth)), 1))), axis=1)
     world_land = np.dot(camera_coords_homogeneous, c2w.T)
     landmarks = world_land[:, 0:3]
+    # Save selected 2D landmarks
+    np.savetxt(os.path.join(dir, "intraop_landmarks.txt"), landmarks, fmt="%.6f", delimiter=" ")
+    print(f"The selected intraop landmarks are saved {dir}")
+
     return landmarks
 
 def depth_compare(w2c_name:dict, K, dir_mesh:str, dir:str):
@@ -592,8 +574,6 @@ def depth_compare(w2c_name:dict, K, dir_mesh:str, dir:str):
     d = {"Depth_wo_bg": rmse_total_bg, "Alpha_wo_bg": alpha_total_bg, "Max Error_wo_bg": max_error_bg,
          "Depth_wo_bg_spe": rmse_total_bg_spe, "Alpha_wo_bg_spe": alpha_total_bg_spe, "Max Error_wo_bg_spe": max_error_bg_spe, "Frame_Name": names}
     dd = pd.DataFrame(d)
-    # add_std = pd.DataFrame({"RMSE":[dd["RMSE"].std(), dd["RMSE"].mean()], "Alpha":[dd["Alpha"].std(), dd["Alpha"].mean()],
-    #                         "Max Error": [dd["Max Error"].std(), dd["Max Error"].mean()]})
     plus_minus = chr(0x00B1)
     add_std = pd.DataFrame(
         {"Depth_wo_bg": [str(np.round(dd["Depth_wo_bg"].mean(),2))+ plus_minus+ str(np.round(dd["Depth_wo_bg"].std(), 2))],
@@ -605,13 +585,13 @@ def depth_compare(w2c_name:dict, K, dir_mesh:str, dir:str):
          "Max Error_wo_bg_spe": [str(np.round(dd["Max Error_wo_bg_spe"].mean(), 2)) + plus_minus + str(np.round(dd["Max Error_wo_bg_spe"].std(), 2))]
          })
 
-    sam = dd.append(add_std, ignore_index= True)
+    sam = pd.concat([dd, add_std], axis=0, ignore_index=True)
     add_number = list(range(1, len(sam["Alpha_wo_bg"])))
     add_str = ["mean"+plus_minus+"std"]
-    combined_values = add_number + add_str
-    sam.insert(0, 'Numbers', combined_values)
-    sam.to_csv(os.path.join(dir, "depth_result11.ods"))
-    print("Excel Result saved in the folder!")
+    combined_values = pd.DataFrame(add_number + add_str)
+    pd.concat([combined_values, sam],axis=1, ignore_index=True)
+    sam.to_csv(os.path.join(dir, "surface_depth.ods"))
+    print("surface depth errors saved" f"{dir}")
     return ()
 
 def uv(UV, w, h):
@@ -740,17 +720,6 @@ def get_exr_rgb(path):
     img = np.dstack(data)
     return img
 
-
-# def chamfer_distance(points_a, points_b):
-#     import numpy as np
-#     # Compute the distances from each point in points_a to the nearest point in points_b
-#     dist_a_to_b = np.min(np.linalg.norm(source[:, np.newaxis] - target, axis=2), axis=1)
-#     # Compute the distances from each point in points_b to the nearest point in points_a
-#     dist_b_to_a = np.min(np.linalg.norm(points_b[:, np.newaxis] - points_a, axis=2), axis=1)
-#
-#     # Chamfer distance is the sum of the averages of these squared distances
-#     chamfer_dist = np.mean(dist_a_to_b) + np.mean(dist_b_to_a)
-#     return chamfer_dist
 
 if __name__ == "__main__":
     icp_function()

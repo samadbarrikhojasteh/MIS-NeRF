@@ -139,7 +139,7 @@ class DataProcessor(mp.Process):  # type: ignore
         maskit = []
         for i in range(len(self.img_data["image"])):
             mask_mean = cv2.cvtColor(self.img_data["image"][i].numpy(), cv2.COLOR_RGB2GRAY)
-            mask_raw = np.where(mask_mean > 0.9, 0.0, 1.0) * 255.0
+            mask_raw = np.where(mask_mean > 0.85, 0.0, 1.0) * 255.0
             maskit.append(mask_raw/255)
         mask_mean = np.stack(maskit, 0)
         mask_torch = torch.from_numpy(mask_mean)
@@ -357,7 +357,7 @@ class ParallelDataManager(DataManager, Generic[TDataset]):
         maskit=[]
         for i in range(len(self.val_batch["image"])):
             mask_mean= cv2.cvtColor(self.val_batch["image"][i].numpy(), cv2.COLOR_RGB2GRAY)
-            mask_raw = np.where(mask_mean > 0.9, 0.0, 1.0) * 255.0
+            mask_raw = np.where(mask_mean > 0.85, 0.0, 1.0) * 255.0
             maskit.append(mask_raw/255)
         mask_mean= np.stack(maskit,0)
         mask_torch= torch.from_numpy(mask_mean)
