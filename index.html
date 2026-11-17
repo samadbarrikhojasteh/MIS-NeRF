@@ -6,6 +6,12 @@
   <meta name="description" content="MIS-NeRF: Neural Radiance Fields in Minimally-Invasive Surgery.">
   <title>MIS-NeRF | Neural Radiance Fields in Minimally-Invasive Surgery</title>
   <style>
+      section p {
+    max-width: 950px;
+    margin: 0 auto;
+    line-height: 1.7;
+    text-align: justify;
+}
     :root {
       color-scheme: light;
       --text: #24292f;
@@ -35,11 +41,11 @@
       padding: 8px 0 56px;
     }
 
-    .hero {
-      background: #000;
-      color: #fff;
+   .hero {
+      background-color: #f0f2f4;
+      color: #24292f;
       text-align: center;
-    }
+   }
 
     .hero-inner {
       width: min(100% - 40px, 1000px);
@@ -47,7 +53,9 @@
       padding: 40px 0 8px;
     }
 
-    .hero .subtitle { color: #c9d1d9; }
+    .hero .subtitle {
+    color: #57606a;
+}
     .hero .project-links { margin-bottom: 32px; }
 
     h1 {
@@ -81,23 +89,46 @@
       margin: 20px 0 38px;
     }
 
-    .project-links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      color: var(--link);
-      text-decoration: none;
-      font-weight: 600;
-      background: #fff;
-    }
+   /* Common style for all three buttons */
+.project-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    min-height: 42px;
+    box-sizing: border-box;
 
-    .project-links a:hover {
-      background: var(--surface);
-      text-decoration: none;
-    }
+    background-color: #24292f;
+    color: #ffffff;
+    border: 1px solid #24292f;
+    border-radius: 7px;
+
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+/* Same hover effect for all buttons */
+.project-links a:hover {
+    background-color: #40464d;
+    border-color: #40464d;
+    color: #ffffff;
+}
+
+/* GitHub icon */
+.project-links .github-icon {
+    fill: #ffffff;
+    width: 35px;
+    height: 38px;
+    flex-shrink: 0;
+}
+
+/* Other SVG icons, if present */
+.project-links .icon-stroke {
+    fill: none;
+    stroke: currentColor;
+}
 
     .project-links svg {
       width: 18px;
@@ -105,7 +136,18 @@
       flex-shrink: 0;
     }
 
-    .project-links .github-icon { fill: #000; }
+    .project-links a:first-child:hover {
+      background: #40464d;
+      border-color: #40464d;
+    }
+
+   .project-links .github-icon {
+    fill: #ffffff;
+    width: 35px;
+    height: 38px;
+    flex-shrink: 0;
+}
+    .project-links .github-icon { fill: #ffffff; }
     .project-links .icon-stroke { fill: none; stroke: currentColor; }
 
     h2 {
@@ -301,13 +343,19 @@
     <section id="method">
       <h2>🔬 Method</h2>
       <p>
-        Existing NeRF methods break down in MIS because of the moving light source and specular highlights. The proposed MIS-NeRF
-        is adapted to these conditions. First, it incorporates the camera centre as an additional input to the radiance function,
-        which allows MIS-NeRF to handle the moving light source. Second, it uses a modified volume rendering which handles specular
-        highlights. Third, it uses a regularised compound loss to enhance surface reconstruction.
+        Existing NeRF methods break down in MIS because of the moving light source and specular highlights. The proposed MIS-NeRF is adapted to these conditions.
+          First, it incorporates the camera center as an additional input to the radiance function, which allows MIS-NeRF to handle the moving light source. Second,
+          it uses a modified volume rendering which handles specular highlights. Third, it uses a regularised compound loss to enhance surface reconstruction.
       </p>
       <figure>
         <img src="assets/MIS-NeRF_1.jpg" style="width: 80%; margin: 0 auto;" alt="Overview of the MIS-NeRF method" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="img-placeholder" style="display:none">
+          <span>🖼️ Image placeholder<br><code>assets/method.png</code></span>
+        </div>
+      </figure>
+                  Furthermore, MIS-NeRF can reconstruct surfaces from MIS sequences despite the presence of slight non-rigid deformations, as illustrated by the normalized deformation heatmap of a synthetic non-rigid dataset.
+      <figure>
+        <img src="assets/Normalized%20Deformation%20Heatmaps.gif" style="width: 80%; margin: 0 auto;" alt="Overview of the MIS-NeRF method" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="img-placeholder" style="display:none">
           <span>🖼️ Image placeholder<br><code>assets/method.png</code></span>
         </div>

@@ -87,7 +87,7 @@ import Imath
 from torchmetrics.functional.image.psnr import peak_signal_noise_ratio
 from torchmetrics.functional.image.ssim import structural_similarity_index_measure
 from torchmetrics.functional.image.lpips import learned_perceptual_image_patch_similarity
-import imageio
+import pandas as pd
 
 
 def _render_trajectory_video(
@@ -982,18 +982,18 @@ class DatasetRender(BaseRender):
                         else:
                             raise ValueError(f"Unknown image format {self.image_format}")
         # # save the errors
-        import pandas as pd
-        error = pd.DataFrame.from_dict(errors, orient="columns")
-        error.to_csv(self.output_path / split / "depth_errors.ods")
-        table = Table(
-            title=None,
-            show_header=False,
-            box=box.MINIMAL,
-            title_style=style.Style(bold=True),
-        )
-        for split in self.split.split("+"):
-            table.add_row(f"Outputs {split}", str(self.output_path / split))
-        CONSOLE.print(Panel(table, title="[bold][green]:tada: Render on split {} Complete :tada:[/bold]", expand=False))
+        # import pandas as pd
+        # error = pd.DataFrame.from_dict(errors, orient="columns")
+        # error.to_csv(self.output_path / split / "depth_errors.ods")
+        # table = Table(
+        #     title=None,
+        #     show_header=False,
+        #     box=box.MINIMAL,
+        #     title_style=style.Style(bold=True),
+        # )
+        # for split in self.split.split("+"):
+        #     table.add_row(f"Outputs {split}", str(self.output_path / split))
+        # CONSOLE.print(Panel(table, title="[bold][green]:tada: Render on split {} Complete :tada:[/bold]", expand=False))
 
         # Compute PSNR, SSIM and LPIPS
         indx = datamanager.dataparser.downscale_factor

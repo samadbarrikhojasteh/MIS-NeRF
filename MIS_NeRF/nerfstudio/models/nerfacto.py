@@ -428,38 +428,7 @@ class NerfactoModel(Model):
             # depth = depth * mask
             predicted_rgb = torch.where(mask == 0.0, 1.0, predicted_rgb)
             gt_rgb = torch.where(mask == 0.0, 1.0, gt_rgb)
-        # Get corresponding Gt depth from "depth_2" folder
-        # if os.path.exists(dir/"depths_2") and "mask" in batch:
-            # depth_path = dir/"depths_2"
-            # depth_GT = torchvision.io.read_image(str(depth_path / specular_mask)).permute([1, 2, 0]).cuda(0)[:, :, 0:1]
-            # depth_GT = self.normalize(depth_GT)
-            # depth_GT_mask = (depth_GT * mask)[:, :, 0:1]
-            #get depths without highlight indices
-            # depth_GT_mask_wo_spe = depth_GT_mask[specular_read[:, :, 0:1]].to(torch.float32)
-            # depth_wo_spe = depth[specular_read[:, :, 0:1]]
 
-            #Compute alpha and disparity between GT depth and rendered depth
-            # depth_resh = torch.reshape(depth, [-1])
-            # depth_GT_resh = torch.reshape(depth_GT_mask, [-1]).to(torch.float32)
-            # alpha = torch.tensordot(torch.transpose(depth_resh, -1, 0), depth_GT_resh, dims=1) / torch.tensordot(torch.transpose(depth_resh,-1,0),depth_resh,dims=1)
-            # alpha_wo_spe = torch.tensordot(torch.transpose(depth_wo_spe, -1,0), depth_GT_mask_wo_spe, dims=1) / torch.tensordot(torch.transpose(depth_wo_spe,-1,0),depth_wo_spe,dims=1)
-            # disparity = torch.mean(torch.abs(depth_GT_mask - depth * alpha), dim=2)
-            #Compute depth rmse
-            # rmse_depth_wo_bg = self.rmse(depth_GT_resh, depth_resh * alpha) # Error for wo bg
-            # rmse_depth_wo_spe = self.rmse(depth_GT_mask_wo_spe, depth_wo_spe * alpha_wo_spe)  #Error for wo spe
-
-
-            #display disparity and convert it into torch to save them
-            # fig = self.plot_disprity(disparity, rmse_depth_wo_bg, rmse_depth_wo_spe)
-            # buf = io.BytesIO()
-            # fig.savefig(buf, format='png')
-            # buf.seek(0)
-            # Read the buffer into a PIL image
-            # image = Image.open(buf)
-            # Convert the PIL image to a PyTorch tensor
-            # tensor_disparity = torch.tensor(np.array(image)) / 255.0  # Normalize to [0, 1]
-            # combined_disparity = torch.cat([tensor_disparity], dim=1)
-            # combined_depth_GT = torch.cat([depth_GT_mask.to(torch.float32)], dim=1)
         combined_rgb = torch.cat([gt_rgb, predicted_rgb], dim=1)
         combined_acc = torch.cat([acc], dim=1)
         combined_depth = torch.cat([depth], dim=1)
@@ -495,12 +464,6 @@ class NerfactoModel(Model):
             metrics_dict["lpips_w_bg_0"] = float(lpips_w_bg_0)
 
         images_dict = {"img": combined_rgb, "accumulation": combined_acc, "depth": combined_depth}
-        # if os.path.exists(dir / "depths_2") and "mask" in batch:
-            # Compute rmse depth between masked GT depth and masked rendered depth map
-            # metrics_dict["rmse_depth_wo_bg"] = float(rmse_depth_wo_bg)
-            # metrics_dict["rmse_depth_wo_spe"] = float(rmse_depth_wo_spe)
-            # images_dict["disparity"] = combined_disparity # Add disparity map into image_dict
-            # images_dict["depth_GT"] = combined_depth_GT
 
 
         for i in range(self.config.num_proposal_iterations):
@@ -532,9 +495,6 @@ class NerfactoModel(Model):
         cax = div.append_axes('right', '5%', '5%')
         cv0 = torch.Tensor.cpu(disparity).numpy()
         im = ax.imshow(cv0)  # Here make an AxesImage rather than contour
-        # cb = fig.colorbar(im, cax=cax)
-        # tx = ax.set_title(framename)
-        # plt.savefig(output_path)
         fig.colorbar(im, cax=cax)
         ax.set_title(frame_error)
         return(fig)
