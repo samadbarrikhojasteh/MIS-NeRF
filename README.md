@@ -72,6 +72,7 @@ ns-train nerfacto \
 ```
 Replace `/YOUR/DATA/PATH` with the directory containing your processed dataset and `/YOUR/OUTPUT/PATH` with the desired directory for saving the training outputs.
 </div>
+
 ## 4. 📊 Evaluation
 
 <div align="justify">
@@ -83,6 +84,7 @@ To evaluate your trained model on the test dataset and compute the photometric m
 ns-render dataset --load-config /YOUR/PATH/config.yml
 ```
 The metrics CSV file can be found in the `renders` folder.
+
 ## 5. 🔄 ICP Registration
 
 <div align="justify">
