@@ -106,6 +106,7 @@ The `--intraop_landmarks` argument is optional. If it is not provided, the scrip
 `intraop_landmarks.txt`.
 
 </div>
+
 ## 📖 Citation
 
 If you find MIS-NeRF useful, please cite our paper:
